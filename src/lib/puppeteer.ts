@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer'
 
-async function openPage() {
+export async function searchElements() {
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
 
