@@ -20,7 +20,14 @@ export async function GET() {
 
   if (url.sinapi) {
     await page.goto(url.sinapi)
-    const content = await page.content()
+    const content = await page.$$eval(
+      '::-p-text("SINAPI – a partir Jul/2009")',
+      (references) => {
+        return references.map((reference) => reference.textContent)
+      },
+    )
+    // const content = await page.content()
+    browser.close()
     return Response.json(content)
   }
 }
