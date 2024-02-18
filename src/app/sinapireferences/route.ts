@@ -1,18 +1,20 @@
 import puppeteer, { Page } from 'puppeteer'
 
-type url = {
+type Url = {
   sinapi?: string
   sudecap?: string
   setop?: string
   sicro?: string
 }
 
-const url: url = {
+const url: Url = {
   sinapi: process.env.SINAPI_URL,
   sudecap: process.env.SINAPI_URL,
   setop: process.env.SINAPI_URL,
   sicro: process.env.SINAPI_URL,
 }
+
+let sinapiHrefList: (string | null)[] = []
 
 async function clickAcceptCookie(page: Page) {
   await page.waitForSelector('#adopt-accept-all-button')
@@ -28,22 +30,27 @@ async function clickAllSinapiState(page: Page) {
   for (const state of statesSelectors) {
     await page.click(`#${state}`)
     await getAllAElements(page)
+    await new Promise((resolve) => setTimeout(resolve, 1500))
   }
-  console.log(`A quantidade de elementos é: ${statesSelectors}`)
-  const contentPage = await page.content()
-  return contentPage
 }
 
 async function getAllAElements(page: Page) {
   await page.waitForSelector('::-p-text(SINAPI_ref_Insumos_Composicoes)')
+  sinapiHrefList = await page.$$eval(
+    '::-p-text(SINAPI_ref_Insumos_Composicoes)',
+    (stateFilesElements) =>
+      stateFilesElements.map((stateFileElement) =>
+        stateFileElement.getAttribute('href'),
+      ),
+  )
 }
 
 export async function GET() {
   const browser = await puppeteer.launch({ headless: false })
   const page = await browser.newPage()
-  await page.goto('https://www.caixa.gov.br/site/Paginas/downloads.aspx')
+  if (url.sinapi) await page.goto(url.sinapi)
   await clickAcceptCookie(page)
-  const listSinapiAC = await clickAllSinapiState(page)
+  await clickAllSinapiState(page)
 
-  return Response.json(listSinapiAC)
+  return Response.json(sinapiHrefList)
 }
