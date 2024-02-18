@@ -1,18 +1,5 @@
 import puppeteer, { Page } from 'puppeteer'
-
-type Url = {
-  sinapi?: string
-  sudecap?: string
-  setop?: string
-  sicro?: string
-}
-
-const url: Url = {
-  sinapi: process.env.SINAPI_URL,
-  sudecap: process.env.SINAPI_URL,
-  setop: process.env.SINAPI_URL,
-  sicro: process.env.SINAPI_URL,
-}
+import fs from 'fs'
 
 let sinapiHrefList: (string | null)[] = []
 
@@ -21,7 +8,7 @@ async function clickAcceptCookie(page: Page) {
   await page.click('#adopt-accept-all-button')
 }
 
-async function clickAllSinapiState(page: Page) {
+async function getAllElementsList(page: Page) {
   await page.waitForSelector('::-p-text(SINAPI – a partir Jul/2009)')
   const statesSelectors = await page.$$eval(
     '::-p-text(SINAPI – a partir Jul/2009)',
@@ -30,7 +17,7 @@ async function clickAllSinapiState(page: Page) {
   for (const state of statesSelectors) {
     await page.click(`#${state}`)
     await getAllAElements(page)
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    await new Promise((resolve) => setTimeout(resolve, 2000))
   }
 }
 
@@ -48,9 +35,11 @@ async function getAllAElements(page: Page) {
 export async function GET() {
   const browser = await puppeteer.launch({ headless: false })
   const page = await browser.newPage()
-  if (url.sinapi) await page.goto(url.sinapi)
+  if (process.env.SINAPI_URL) await page.goto(process.env.SINAPI_URL)
   await clickAcceptCookie(page)
-  await clickAllSinapiState(page)
+  await getAllElementsList(page)
+  const content = await sinapiHrefList.join('\n')
+  fs.writeFile('sinapi.txt', content, 'utf-8', (error) => console.error(error))
 
-  return Response.json(sinapiHrefList)
+  return Response.json('Sinapi works!')
 }
