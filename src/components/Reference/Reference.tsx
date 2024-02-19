@@ -1,12 +1,20 @@
-// 'use client'
+'use client'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '../ui/button'
 
-export default function Reference() {
+type ReferenceProps = {
+  data: string[]
+}
+
+export default function Reference(props: ReferenceProps) {
   return (
     <>
       <h1>Reference Works</h1>
-      <Button>Teste</Button>
+      {props.data.map((reference: string) => (
+        <a key={reference} href={reference}>
+          <Button>SINAPI</Button>
+        </a>
+      ))}
     </>
   )
 }
