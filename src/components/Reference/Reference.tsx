@@ -8,13 +8,12 @@ type ReferenceProps = {
 
 export default function Reference(props: ReferenceProps) {
   return (
-    <>
-      <h1>Reference Works</h1>
+    <div className='container mt-8'>
       {props.data.map((reference: string) => (
         <a key={reference} href={reference}>
           <Button>SINAPI</Button>
         </a>
       ))}
-    </>
+    </div>
   )
 }

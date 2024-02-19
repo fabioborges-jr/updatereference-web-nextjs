@@ -9,7 +9,9 @@ export default async function Home() {
   return (
   <>
     <h1>Referências atualizadas</h1>
-    <Reference data={dataFile} />
+    <div className='container'>
+      <Reference data={dataFile} />
+    </div>
   </>
   )
 }
