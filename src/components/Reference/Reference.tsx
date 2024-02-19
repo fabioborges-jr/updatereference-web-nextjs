@@ -1,5 +1,6 @@
 'use client'
 
+import { Link } from 'lucide-react'
 import { Button } from '../ui/button'
 
 type ReferenceProps = {
@@ -8,11 +9,11 @@ type ReferenceProps = {
 
 export default function Reference(props: ReferenceProps) {
   return (
-    <div className='container mt-8'>
+    <div className='container mt-8 flex flex-col w-1/4'>
       {props.data.map((reference: string) => (
-        <a key={reference} href={reference}>
-          <Button>SINAPI</Button>
-        </a>
+        <Button asChild>
+          <a key={reference} href={reference} className='mt-2'>SINAPI</a>
+        </Button>
       ))}
     </div>
   )

@@ -9,7 +9,9 @@ export default async function Home() {
   return (
   <>
     <h1>Referências atualizadas</h1>
-    <div className='container'>
+    <div className='container flex bg-orange-200'>
+      <Reference data={dataFile} />
+      <Reference data={dataFile} />
       <Reference data={dataFile} />
     </div>
   </>
