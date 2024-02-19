@@ -8,15 +8,15 @@ type ReferenceProps = {
 
 export default function Reference(props: ReferenceProps) {
   return (
-    <div className="break-all container mt-8 flex flex-col bg-red-300 w-1/4 mx-3">
+    <div className="break-all container mt-8 flex flex-col bg-color-3 w-1/4 mx-3">
       <h1 className="text-xl">SINAPI</h1>
       {props.data.map((reference: string) => (
         <Link
           key={reference}
           href={reference}
-          className="break-all mt-2 h-auto"
+          className="break-all mt-2 bg-color-1 "
         >
-          <p className="break-words">{reference.slice(94)}</p>
+          <p className="text-color-4 p-5">{reference.slice(94)}</p>
         </Link>
       ))}
     </div>
