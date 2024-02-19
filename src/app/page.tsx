@@ -6,5 +6,10 @@ export default async function Home() {
     '\n',
   )
 
-  return <Reference data={dataFile} />
+  return (
+  <>
+    <h1>Referências atualizadas</h1>
+    <Reference data={dataFile} />
+  </>
+  )
 }
