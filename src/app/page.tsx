@@ -7,14 +7,14 @@ export default async function Home() {
   )
 
   return (
-  <>
-    <h1>Referências atualizadas</h1>
-    <div className='container flex bg-orange-200 w-full'>
-      <Reference data={dataFile} />
-      <Reference data={dataFile} />
-      <Reference data={dataFile} />
-      <Reference data={dataFile} />
-    </div>
-  </>
+    <>
+      <h1>Referências atualizadas</h1>
+      <div className="container flex bg-orange-200 w-full">
+        <Reference data={dataFile} />
+        <Reference data={dataFile} />
+        <Reference data={dataFile} />
+        <Reference data={dataFile} />
+      </div>
+    </>
   )
 }
