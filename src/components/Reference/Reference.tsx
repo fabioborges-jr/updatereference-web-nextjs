@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { Button } from '../ui/button'
 
 type ReferenceProps = {
@@ -8,12 +9,12 @@ type ReferenceProps = {
 
 export default function Reference(props: ReferenceProps) {
   return (
-    <div className='container mt-8 flex flex-col bg-red-300 mx-2'>
+    <div className='break-all container mt-8 flex flex-col bg-red-300 w-1/4'>
       <h1>SINAPI</h1>
       {props.data.map((reference: string) => (
-        <Button asChild>
-          <a key={reference} href={reference} className='mt-2'>{reference.slice(94)}</a>
-        </Button>
+          <Link key={reference} href={reference} className='break-all mt-2 h-auto'>
+            <p className='break-words'>{reference.slice(94)}</p>
+          </Link>
       ))}
     </div>
   )
