@@ -13,6 +13,7 @@ export default async function Home() {
       <Reference data={dataFile} />
       <Reference data={dataFile} />
       <Reference data={dataFile} />
+      <Reference data={dataFile} />
     </div>
   </>
   )
