@@ -1,10 +1,8 @@
-import Reference from '@/components/Reference/Reference'
+import ReferenceComponent from '@/components/Reference/ReferenceComponent'
 import { promises as fs } from 'fs'
 
 export default async function Home() {
-  const sinapiFile = (await fs.readFile('src/data/sinapi.txt', 'utf-8')).split(
-    '\n',
-  )
+  const sinapiFile = await fs.readFile('src/data/sinapi.txt', 'utf-8')
   // const setopFile = (await fs.readFile('src/data/setop.txt', 'utf-8')).split(
   //   '\n',
   // )
@@ -21,10 +19,10 @@ export default async function Home() {
         <h1 className="text-3xl">REFERÊNCIAS ATUALIZADAS</h1>
       </header>
       <main className="flex w-full">
-        <Reference referenceName="SINAPI" data={sinapiFile} />
-        <Reference referenceName="SETOP" data={["Breve"]} />
-        <Reference referenceName="SUDECAP" data={["Breve"]} />
-        <Reference referenceName="SICRO" data={["Breve"]} />
+        <ReferenceComponent referenceName="SINAPI" data={sinapiFile} />
+        {/* <ReferenceComponent referenceName="SETOP" data={'Breve'} />
+        <ReferenceComponent referenceName="SUDECAP" data={'Breve'} />
+        <ReferenceComponent referenceName="SICRO" data={'Breve'} /> */}
       </main>
     </>
   )
