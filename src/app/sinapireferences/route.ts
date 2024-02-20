@@ -1,20 +1,6 @@
 import puppeteer, { Browser, Page } from 'puppeteer'
 import fs from 'fs'
 
-// interface Scraper{
-//   browser: Browser|null
-//   page: Page|null
-//   referencesList:({
-//     state:string,
-//     month:string,
-//     year:string,
-//     href:string,
-//   }|undefined)[]|undefined
-//   init():Promise<void>
-//   clickAcceptCookie():Promise<void>
-//   getAllFilesHref():Promise<({ state: string; month: string; year: string; href: string; } | undefined)[] | undefined>
-// }
-
 type Reference={
   state: string
   month: string
@@ -28,7 +14,7 @@ class Scraper{
   referencesList:(Reference | undefined)[] | undefined=[]
 
   async init():Promise<void>{
-    this.browser = await puppeteer.launch({ headless: false })
+    this.browser = await puppeteer.launch({ headless: true })
     this.page = await this.browser.newPage()
     if (process.env.SINAPI_URL) await this.page.goto(process.env.SINAPI_URL)
   }
@@ -75,10 +61,12 @@ class Scraper{
 
 export async function GET() {
   const scraper=new Scraper()
-  content.join("\n")
-  if (typeof content=="string"){
-    fs.writeFile('sinapi.txt', content, 'utf-8', (error) => console.error(error))
-  }
+  await scraper.init()
+  await scraper.clickAcceptCookie()
+  const list=await scraper.getAllFilesHref().then((result)=>result.json())
+
+  if(typeof list=="string")
+  fs.writeFile('src/data/sinapi.txt', list, 'utf-8', (error) => console.error(error))
 
   return Response.json('Sinapi works!')
 }
