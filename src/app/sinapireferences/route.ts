@@ -1,37 +1,29 @@
 import puppeteer, { Browser, Page } from 'puppeteer'
 import fs from 'fs'
 
-type Scraper={
+interface Scraper{
   browser: Browser|null
   page: Page|null
-  filesHref:(string|null)[]|undefined
-  reference:{
-    state:string|undefined,
-    month:string|undefined,
-    year:string|undefined,
-    href:string|undefined,
-  }
-  referencesList:{
-    state:string|undefined,
-    month:string|undefined,
-    year:string|undefined,
-    href:string|undefined,
-  }[]|undefined
+  referencesList:({
+    state:string,
+    month:string,
+    year:string,
+    href:string,
+  }|undefined)[]|undefined
   init():Promise<void>
   clickAcceptCookie():Promise<void>
-  getAllFilesHref():Promise<(string | null)[] | undefined>
+  getAllFilesHref():Promise<({ state: string; month: string; year: string; href: string; } | undefined)[] | undefined>
 }
 
-function Scraper(this:Scraper){
-  this.browser
-  this.page
-  this.filesHref
-  this.reference
+class Scraper(){
+  this.browser:null
+  this.page:null
+  this.referencesList:[]
 
   this.init = async() => {
-    const browser = await puppeteer.launch({ headless: false })
-    const page = await browser.newPage()
-    if (process.env.SINAPI_URL) await page.goto(process.env.SINAPI_URL)
+    this.browser = await puppeteer.launch({ headless: false })
+    this.page = await this.browser.newPage()
+    if (process.env.SINAPI_URL) await this.page.goto(process.env.SINAPI_URL)
   }
 
   this.clickAcceptCookie = async()=>{
@@ -50,36 +42,32 @@ function Scraper(this:Scraper){
     for (const state of statesSelectors) {
       await this.page?.click(`#${state}`)
       await this.page?.waitForSelector('::-p-text(SINAPI_ref_Insumos_Composicoes)')
-      this.filesHref = await this.page?.$$eval(
+      const filesHref = await this.page?.$$eval(
         '::-p-text(SINAPI_ref_Insumos_Composicoes)',
         (stateFilesElements) =>
           stateFilesElements.map((stateFileElement) =>
             stateFileElement.getAttribute('href'),
           ),
       )
-      this.referencesList?.push(this.filesHref?.map(href=>{
-        this.reference={
-          state:href?.slice(94,95),
-          month:href?.slice(101,102),
-          year:href?.slice(97,100),
-          href:href?
+      this.referencesList=filesHref?.map((fileHref)=>{
+        if(typeof fileHref=="string"){
+          const reference={
+            state:fileHref.slice(94,95),
+            month:fileHref.slice(101,102),
+            year:fileHref.slice(97,100),
+            href:fileHref
+          }
+          return reference
         }
-      }))
+      })
       await new Promise((resolve) => setTimeout(resolve, 2000))
     }
-
     return this.referencesList
-
-    
   }
-
 }
 
-
-
 export async function GET() {
-
-  content.
+  const scraper=new Scraper:Scraper()
   content.join("\n")
   if (typeof content=="string"){
     fs.writeFile('sinapi.txt', content, 'utf-8', (error) => console.error(error))
