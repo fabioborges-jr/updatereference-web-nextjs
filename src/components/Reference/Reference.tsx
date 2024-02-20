@@ -10,7 +10,7 @@ type ReferenceProps = {
 export default function Reference(props: ReferenceProps) {
   return (
     <div className="break-all container mt-8 flex flex-col bg-color-3 w-1/4 mx-3">
-      <h1 className="text-xl">SINAPI</h1>
+      <h1 className="text-xl">{props.referenceName}</h1>
       {props.data.map((reference: string) => (
         <Link
           key={reference}
