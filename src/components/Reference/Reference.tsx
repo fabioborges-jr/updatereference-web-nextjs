@@ -3,6 +3,7 @@
 import Link from 'next/link'
 
 type ReferenceProps = {
+  referenceName: string
   data: string[]
 }
 

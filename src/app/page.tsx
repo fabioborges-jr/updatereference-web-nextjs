@@ -21,10 +21,10 @@ export default async function Home() {
         <h1 className="text-3xl">REFERÊNCIAS ATUALIZADAS</h1>
       </header>
       <main className="flex w-full">
-        <Reference data={sinapiFile} />
-        <Reference data={["Breve"]} />
-        <Reference data={["Breve"]} />
-        <Reference data={["Breve"]} />
+        <Reference referenceName="sinapi" data={sinapiFile} />
+        <Reference referenceName="setop" data={["Breve"]} />
+        <Reference referenceName="sudecap" data={["Breve"]} />
+        <Reference referenceName="sicro" data={["Breve"]} />
       </main>
     </>
   )
