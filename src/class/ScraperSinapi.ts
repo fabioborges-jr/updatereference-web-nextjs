@@ -7,6 +7,7 @@ export default class Scraper {
   referencesList?: (Reference | undefined)[] | undefined
 
   async init(): Promise<void> {
+    console.log('Busca iniciada')
     this.browser = await puppeteer.launch({ headless: true })
     this.page = await this.browser.newPage()
     if (process.env.SINAPI_URL) await this.page.goto(process.env.SINAPI_URL)
@@ -42,13 +43,13 @@ export default class Scraper {
           (descriptions) =>
             descriptions.map((description) => description.textContent),
         )
+        description?.shift()
 
         const published = await this.page?.$$eval(
           '::-p-text(Publicado em)',
           (publishedItems) =>
             publishedItems.map((publishedItem) => publishedItem.textContent),
         )
-        console.log(Date.now(), 'filesHref', filesHref)
         this.referencesList = filesHref?.map((fileHref, index) => {
           if (fileHref && description && published) {
             const reference: Reference = {
@@ -57,14 +58,13 @@ export default class Scraper {
               published: published[index],
               href: fileHref,
             }
-            console.log(Date.now(), 'reference:', reference)
             return reference
           }
           return undefined
         })
         await new Promise((resolve) => setTimeout(resolve, 2000))
       }
-    console.log('referenceList:', this.referencesList)
+    console.log('Busca Finalizada')
     return this.referencesList
   }
 }

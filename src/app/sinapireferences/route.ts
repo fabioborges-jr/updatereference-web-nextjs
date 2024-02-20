@@ -7,9 +7,9 @@ export async function GET() {
   await scraper.clickAcceptCookie()
   const list = JSON.stringify(await scraper.getAllFilesHref())
 
-  fs.writeFile('src/data/sinapi.txt', list, 'utf-8', (error) =>
-    console.error(error),
-  )
+  fs.writeFile('src/data/sinapi.txt', list, 'utf-8', (error) => {
+    if (error) throw error
+  })
 
   return Response.json('Sinapi works!')
 }
