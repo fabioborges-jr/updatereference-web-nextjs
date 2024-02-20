@@ -8,13 +8,15 @@ export default async function Home() {
 
   return (
     <>
-      <h1 className="text-3xl">REFERÊNCIAS ATUALIZADAS</h1>
-      <div className="flex w-full">
+      <header>
+        <h1 className="text-3xl">REFERÊNCIAS ATUALIZADAS</h1>
+      </header>
+      <main className="flex w-full">
         <Reference data={dataFile} />
         <Reference data={dataFile} />
         <Reference data={dataFile} />
         <Reference data={dataFile} />
-      </div>
+      </main>
     </>
   )
 }
